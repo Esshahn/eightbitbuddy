@@ -34,7 +34,9 @@ export function dec2Hex (string) {
 }
 
 export function dec2Bin (string) {
-    return (parseInt(string,10).toString(2));
+    let number_cutoff = -8;
+    if (parseInt(string,10) >= 256) number_cutoff = -16;
+    return (("0000000000000000"+parseInt(string,10).toString(2)).slice(number_cutoff));
 }
 
 export function hex2Dec (string) {
@@ -42,7 +44,9 @@ export function hex2Dec (string) {
 }
 
 export function hex2Bin (string) {
-    return (parseInt(string,16).toString(2));
+    let number_cutoff = -8;
+    if (parseInt(string,16) >= 256) number_cutoff = -16;
+    return (("0000000000000000"+parseInt(string,16).toString(2)).slice(number_cutoff));
 }
 
 export function bin2Dec (string) {
