@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View, StyleSheet, FlatList } from 'react-native';
-import { dec2Hex, dec2Bin } from '../../Converter';
+import { dec2HexShort, dec2BinShort } from '../modules/Converter';
 
 
 export default class TableScreen extends React.Component {
@@ -15,12 +15,35 @@ export default class TableScreen extends React.Component {
       this.notatedList.push( {key: counter.toString(10)} );
       counter ++;
     }
+  
+
+    // render item function, outside from class's `render()`
+    this.renderItem = ({ item, index }) => (
+      (index % 2)?
+      <View style={styles.tableRowOdd}>
+        <Text style={styles.tableItem}>{item.key}</Text>
+        <Text style={styles.tableItem}>{dec2HexShort(item.key)}</Text>
+        <Text style={styles.tableItem}>{dec2BinShort(item.key)}</Text>
+      </View>
+    :
+      <View style={styles.tableRowEven}>
+        <Text style={styles.tableItem}>{item.key}</Text>
+        <Text style={styles.tableItem}>{dec2HexShort(item.key)}</Text>
+        <Text style={styles.tableItem}>{dec2BinShort(item.key)}</Text>
+      </View>
+    );
 
   }
 
   render() {
     return (
+
       <View style={styles.container}>
+
+        <View style={styles.header}>
+          <Text style={styles.headerText}>Conversion table 0-255</Text>
+        </View>
+
         <View style={styles.tableHeader}>
             <Text style={styles.tableHeaderItem}>DEC</Text>
             <Text style={styles.tableHeaderItem}>HEX</Text>
@@ -30,20 +53,9 @@ export default class TableScreen extends React.Component {
         <View style={styles.table}> 
           <FlatList
             data= {this.notatedList}
-            renderItem={({item,index}) =>
-              (index % 2)?
-                <View style={styles.tableRowOdd}>
-                  <Text style={styles.tableItem1}>{item.key}</Text>
-                  <Text style={styles.tableItem1}>{dec2Hex(item.key)}</Text>
-                  <Text style={styles.tableItem1}>{dec2Bin(item.key)}</Text>
-                </View>
-              :
-                <View style={styles.tableRowEven}>
-                  <Text style={styles.tableItem1}>{item.key}</Text>
-                  <Text style={styles.tableItem1}>{dec2Hex(item.key)}</Text>
-                  <Text style={styles.tableItem1}>{dec2Bin(item.key)}</Text>
-                </View>
-            }
+            renderItem={this.renderItem}
+            initialNumToRender={50}
+            maxToRenderPerBatch={10}
           />
         </View>
       </View>
@@ -60,7 +72,7 @@ const styles = StyleSheet.create({
    flex: 1,
   },
 
-  tableItem1: {
+  tableItem: {
     flex: 1,
     fontSize: 18,
     height: 24,
@@ -76,10 +88,25 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 
+  header: {
+    backgroundColor: 'rgba(50,50,50,1.0)',
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingBottom: 10,
+    paddingTop: 10,
+
+  },
+
+  headerText: {
+    color: 'white',
+    fontSize: 24,
+
+  },
+
   tableHeader: {
     flexDirection: 'row',
     fontWeight: 'bold',
-    backgroundColor: 'rgba(250,50,50,1.0)',
+    backgroundColor: 'tomato',
     paddingLeft: 20,
     paddingRight: 20,
     paddingBottom: 10,
@@ -91,11 +118,15 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     paddingRight: 20,
     backgroundColor: '#ffffff',
+    paddingTop: 4,
+    paddingBottom: 4,
   },
   tableRowEven: {
     flexDirection: 'row',
     paddingLeft: 20,
     paddingRight: 20,
     backgroundColor: '#dddddd',
+    paddingTop: 4,
+    paddingBottom: 4,
   },
 })

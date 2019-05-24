@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View, FlatList, StyleSheet } from 'react-native';
-import { dec2Hex } from '../../Converter';
+import { dec2HexShort } from '../modules/Converter';
 
 export default class ColorScreen extends React.Component {
 
@@ -32,6 +32,11 @@ export default class ColorScreen extends React.Component {
     render() {
       return (
         <View style={styles.container}>
+          
+          <View style={styles.header}>
+            <Text style={styles.headerText}>Commodore 64 colors</Text>
+          </View>
+          
           <View style={styles.tableHeader}>
               <Text style={styles.tableColorHeaderItem1}>DEC</Text>
               <Text style={styles.tableColorHeaderItem2}>HEX</Text>
@@ -43,25 +48,26 @@ export default class ColorScreen extends React.Component {
           <View style={styles.table}> 
             <FlatList
               data= {this.notatedList}
+              initialNumToRender={16}
               renderItem={({item,index}) =>
                 (index % 2)?
                   <View style={styles.tableRowOdd}>
                     <Text style={styles.tableColorItem1}>{item.key}</Text>
-                    <Text style={styles.tableColorItem2}>{dec2Hex(item.key)}</Text>
+                    <Text style={styles.tableColorItem2}>{dec2HexShort(item.key)}</Text>
                     <Text style={styles.tableColorItem3}>{item.name}</Text>
                     <Text style={styles.tableColorItem4}>{item.rgb}</Text>                  
                     <Text style={styles.tableColorItem5}>
-                      <Text style={item.color}>            </Text>
+                      <Text style={ item.color }>        </Text>
                     </Text>
                   </View>
                 :
                   <View style={styles.tableRowEven}>
                     <Text style={styles.tableColorItem1}>{item.key}</Text>
-                    <Text style={styles.tableColorItem2}>{dec2Hex(item.key)}</Text>
+                    <Text style={styles.tableColorItem2}>{dec2HexShort(item.key)}</Text>
                     <Text style={styles.tableColorItem3}>{item.name}</Text>
                     <Text style={styles.tableColorItem4}>{item.rgb}</Text>                  
                     <Text style={styles.tableColorItem5}>
-                      <Text style={item.color}>            </Text>
+                      <Text style={ item.color }>        </Text>
                     </Text>
                   </View>
               }
@@ -81,16 +87,29 @@ export default class ColorScreen extends React.Component {
      flex: 1,
     },
   
-
-  
     table: {
       flex: 1,
+    },
+
+    header: {
+      backgroundColor: 'rgba(50,50,50,1.0)',
+      paddingLeft: 20,
+      paddingRight: 20,
+      paddingBottom: 10,
+      paddingTop: 10,
+ 
+    },
+
+    headerText: {
+      color: 'white',
+      fontSize: 24,
+
     },
   
     tableHeader: {
       flexDirection: 'row',
       fontWeight: 'bold',
-      backgroundColor: 'rgba(50,50,50,1.0)',
+      backgroundColor: 'tomato',
       paddingLeft: 20,
       paddingRight: 20,
       paddingBottom: 10,
@@ -102,13 +121,19 @@ export default class ColorScreen extends React.Component {
       paddingLeft: 20,
       paddingRight: 20,
       backgroundColor: '#ffffff',
+      paddingTop: 4,
+      paddingBottom: 4,
     },
+
     tableRowEven: {
       flexDirection: 'row',
       paddingLeft: 20,
       paddingRight: 20,
       backgroundColor: '#dddddd',
+      paddingTop: 4,
+      paddingBottom: 4,
     },
+
     tableColorItem1: {
       flex: 1,
       fontSize: 18,
@@ -158,5 +183,9 @@ export default class ColorScreen extends React.Component {
       fontWeight: 'bold',
       color: '#ffffff',
       flex: 1.0,
+    },
+    color: {
+      width: 10,
+      backgroundColor: 'black'
     },
   })
