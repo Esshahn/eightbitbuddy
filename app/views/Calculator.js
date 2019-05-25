@@ -13,9 +13,13 @@ export default class HomeScreen extends React.Component {
     }
 
     convert_dec(text){
+      let cleaned = text.replace(/[^0-9]/g, ""); // accept only 0-9
+      
+      let pressable = false;
+      if(parseInt(text,10)<256) pressable = true; // only allow shifting when 8 bit number
+      
       if (text != ""){
-        let cleaned = text.replace(/[^0-9]/g, "");
-        this.setState({dec: cleaned, hex: dec2Hex(cleaned), bin: dec2Bin(cleaned), pressable: true});
+        this.setState({dec: cleaned, hex: dec2Hex(cleaned), bin: dec2Bin(cleaned), pressable: pressable});
       }else{
         let cleaned = "";
         this.setState({dec: cleaned, hex: cleaned, bin: cleaned, pressable: false});
@@ -23,9 +27,13 @@ export default class HomeScreen extends React.Component {
     }
 
     convert_hex(text){
+      let cleaned = text.replace(/[^0-9a-fA-F]/g, ""); // accept only 0-9 and a-f
+
+      let pressable = false;
+      if(parseInt(text,16)<256) pressable = true; // only allow shifting when 8 bit number
+      
       if (text != ""){
-        let cleaned = text.replace(/[^0-9a-fA-F]/g, "");
-        this.setState({dec: hex2Dec(cleaned), hex: cleaned, bin: hex2Bin(cleaned), pressable: true});
+        this.setState({dec: hex2Dec(cleaned), hex: cleaned, bin: hex2Bin(cleaned), pressable: pressable});
       }else{
         let cleaned = "";
         this.setState({dec: cleaned, hex: cleaned, bin: cleaned, pressable: false});
@@ -33,9 +41,13 @@ export default class HomeScreen extends React.Component {
     }
 
     convert_bin(text){
+      let cleaned = text.replace(/[^0-1]/g, "");  // accept only 0-1
+
+      let pressable = false;
+      if(parseInt(text,2)<256) pressable = true; // only allow shifting when 8 bit number
+      
       if (text != ""){
-        let cleaned = text.replace(/[^0-1]/g, "");
-        this.setState({dec: bin2Dec(cleaned), hex: bin2Hex(cleaned), bin: cleaned, pressable: true});
+        this.setState({dec: bin2Dec(cleaned), hex: bin2Hex(cleaned), bin: cleaned, pressable: pressable});
       }else{
         let cleaned = "";
         this.setState({dec: cleaned, hex: cleaned, bin: cleaned, pressable: false});
@@ -47,10 +59,27 @@ export default class HomeScreen extends React.Component {
       this.setState({dec: result, hex: dec2Hex(result), bin: dec2Bin(result)});
     }
 
-    convert_asl(){
-      let result = (this.state.dec << 1).toString(10);
+    convert_asl_old(){
+      let result = (this.state.dec << 1);
+      
+      if(result > 128) result = 0;
+      result = result.toString(10);
       this.setState({dec: result, hex: dec2Hex(result), bin: dec2Bin(result)});
     }
+
+    convert_asl(){
+      // this is a bit more complicated because shift left does 32 bit in JS, not 8 bit
+      // therefore I can't shift (or don't know how to limit the result within 8 bit)
+      // but do string operations instead
+      
+      let result = dec2Bin(this.state.dec); // first give me the binary version of the decimal number entered
+      result = result.slice(-7) + "0";      // now we drop the first character ( most significant bit) and add a 0 at the end
+      result = parseInt(result,2);          // we convert the string into the binary number
+      result = result.toString(10);         // and the number into decimal string (needed as input for the function below)
+     
+      this.setState({dec: result, hex: dec2Hex(result), bin: dec2Bin(result)});
+    }
+
 
 
 
@@ -109,12 +138,13 @@ export default class HomeScreen extends React.Component {
 
 
           <View style={styles.buttonContainer}>
-            <TouchableOpacity style={[styles.button, { opacity: this.state.pressable ? 1 : 0.5 }]} onPress= {() => this.convert_lsr(this)} disabled={!this.state.pressable} >
-              <Text style={styles.buttonText}>LSR</Text>
-            </TouchableOpacity>
 
             <TouchableOpacity style={[styles.button, { opacity: this.state.pressable ? 1 : 0.5 }]} onPress= {() => this.convert_asl(this)} disabled={!this.state.pressable} >
               <Text style={styles.buttonText}>ASL</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={[styles.button, { opacity: this.state.pressable ? 1 : 0.5 }]} onPress= {() => this.convert_lsr(this)} disabled={!this.state.pressable} >
+              <Text style={styles.buttonText}>LSR</Text>
             </TouchableOpacity>
 
             <TouchableOpacity style={[styles.button, { opacity: this.state.pressable ? 1 : 0.5 }]} onPress= {() => this.convert_lsr(this)} disabled={!this.state.pressable} >
