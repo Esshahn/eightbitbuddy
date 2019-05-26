@@ -30,7 +30,7 @@ export function dec2BinShort (decValue) {
 
 
 export function dec2Hex (string) {
-    return (parseInt(string,10).toString(16));
+    return (parseInt(string,10).toString(16).toUpperCase());
 }
 
 export function dec2Bin (string) {
@@ -54,5 +54,5 @@ export function bin2Dec (string) {
 }
 
 export function bin2Hex (string) {
-    return (parseInt(string,2).toString(16));
+    return (parseInt(string,2).toString(16).toUpperCase());
 }

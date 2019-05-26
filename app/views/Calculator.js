@@ -1,6 +1,7 @@
 import React from 'react';
 import { Alert, Text, View, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import { dec2Hex, dec2Bin, hex2Dec, hex2Bin, bin2Dec, bin2Hex } from '../modules/Converter';
+import { thisExpression } from '@babel/types';
 
 
 
@@ -8,7 +9,7 @@ export default class HomeScreen extends React.Component {
   
     constructor(props) {
       super(props);
-      this.state = { dec: '', hex: '', bin: '', pressable: false };
+      this.state = { dec: '', hex: '', bin: '', carry: '0', pressable: false };
       
     }
 
@@ -16,23 +17,23 @@ export default class HomeScreen extends React.Component {
       let cleaned = text.replace(/[^0-9]/g, ""); // accept only 0-9
       
       let pressable = false;
-      if(parseInt(text,10)<256) pressable = true; // only allow shifting when 8 bit number
+      if(parseInt(cleaned,10)<256) pressable = true; // only allow shifting when 8 bit number
       
-      if (text != ""){
+      if (cleaned != ""){
         this.setState({dec: cleaned, hex: dec2Hex(cleaned), bin: dec2Bin(cleaned), pressable: pressable});
       }else{
         let cleaned = "";
         this.setState({dec: cleaned, hex: cleaned, bin: cleaned, pressable: false});
-      }
+      } 
     }
 
     convert_hex(text){
       let cleaned = text.replace(/[^0-9a-fA-F]/g, ""); // accept only 0-9 and a-f
 
       let pressable = false;
-      if(parseInt(text,16)<256) pressable = true; // only allow shifting when 8 bit number
+      if(parseInt(cleaned,16)<256) pressable = true; // only allow shifting when 8 bit number
       
-      if (text != ""){
+      if (cleaned != ""){
         this.setState({dec: hex2Dec(cleaned), hex: cleaned, bin: hex2Bin(cleaned), pressable: pressable});
       }else{
         let cleaned = "";
@@ -44,9 +45,9 @@ export default class HomeScreen extends React.Component {
       let cleaned = text.replace(/[^0-1]/g, "");  // accept only 0-1
 
       let pressable = false;
-      if(parseInt(text,2)<256) pressable = true; // only allow shifting when 8 bit number
+      if(parseInt(cleaned,2)<256) pressable = true; // only allow shifting when 8 bit number
       
-      if (text != ""){
+      if (cleaned != ""){
         this.setState({dec: bin2Dec(cleaned), hex: bin2Hex(cleaned), bin: cleaned, pressable: pressable});
       }else{
         let cleaned = "";
@@ -78,6 +79,48 @@ export default class HomeScreen extends React.Component {
       result = result.toString(10);         // and the number into decimal string (needed as input for the function below)
      
       this.setState({dec: result, hex: dec2Hex(result), bin: dec2Bin(result)});
+    }
+
+
+    convert_rol(){
+      // this is a bit more complicated because shift left does 32 bit in JS, not 8 bit
+      // therefore I can't shift (or don't know how to limit the result within 8 bit)
+      // but do string operations instead
+      
+      let result = dec2Bin(this.state.dec); // first give me the binary version of the decimal number entered
+      let temp_carry = result.slice(0,1);   // the most significant bit goes into the temp carry
+      
+      result = result.slice(-7) + this.state.carry;      // now we drop the first character ( most significant bit) and add the carry
+
+      result = parseInt(result,2);          // we convert the string into the binary number
+      result = result.toString(10);         // and the number into decimal string (needed as input for the function below)
+     
+      this.setState({dec: result, hex: dec2Hex(result), bin: dec2Bin(result), carry: temp_carry});
+    }
+
+    convert_ror(){
+      // this is a bit more complicated because shift left does 32 bit in JS, not 8 bit
+      // therefore I can't shift (or don't know how to limit the result within 8 bit)
+      // but do string operations instead
+      
+      let result = dec2Bin(this.state.dec); // first give me the binary version of the decimal number entered
+      let temp_carry = result.slice(-1);   // the most significant bit goes into the temp carry
+      
+      result =  this.state.carry + result.slice(0,7);      // now we drop the first character ( most significant bit) and add the carry
+
+      result = parseInt(result,2);          // we convert the string into the binary number
+      result = result.toString(10);         // and the number into decimal string (needed as input for the function below)
+     
+      this.setState({dec: result, hex: dec2Hex(result), bin: dec2Bin(result), carry: temp_carry});
+    }
+
+    toggle_carry(){
+      if (this.state.carry == "0"){
+        this.state.carry = "1";
+      } else {
+        this.state.carry = "0";
+      }
+      this.setState({carry: this.state.carry});
     }
 
 
@@ -122,7 +165,7 @@ export default class HomeScreen extends React.Component {
               value={this.state.hex}
             />
           
-
+          
             <TextInput 
               style={styles.inputField}
               autoCapitalize={"characters"}
@@ -147,12 +190,16 @@ export default class HomeScreen extends React.Component {
               <Text style={styles.buttonText}>LSR</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={[styles.button, { opacity: this.state.pressable ? 1 : 0.5 }]} onPress= {() => this.convert_lsr(this)} disabled={!this.state.pressable} >
+            <TouchableOpacity style={[styles.button, { opacity: this.state.pressable ? 1 : 0.5 }]} onPress= {() => this.convert_rol(this)} disabled={!this.state.pressable} >
               <Text style={styles.buttonText}>ROL</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={[styles.button, { opacity: this.state.pressable ? 1 : 0.5 }]} onPress= {this.convert_rol} disabled={!this.state.pressable} >
+            <TouchableOpacity style={[styles.button, { opacity: this.state.pressable ? 1 : 0.5 }]} onPress= {() => this.convert_ror(this)} disabled={!this.state.pressable} >
               <Text style={styles.buttonText}>ROR</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={[styles.button, { opacity: this.state.pressable ? 1 : 0.5 }]} onPress= {() => this.toggle_carry(this)} disabled={!this.state.pressable} >
+              <Text style={styles.buttonText}>Carry: {this.state.carry}</Text>
             </TouchableOpacity>
 
           </View>
@@ -191,6 +238,13 @@ const styles = StyleSheet.create({
 
     },
 
+    carry:{
+      backgroundColor: 'yellow',
+      width: 20,
+      height: 20,
+      alignItems: 'center',
+    },
+
 
     inputField: {
       marginBottom: 10,
@@ -201,7 +255,8 @@ const styles = StyleSheet.create({
       fontWeight: 'bold',
       color: 'white', 
       borderBottomColor: 'white',
-      borderBottomWidth: 3,     
+      borderBottomWidth: 2,   
+       
     },
 
     inputLabel:{
