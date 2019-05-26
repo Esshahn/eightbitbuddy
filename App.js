@@ -6,13 +6,14 @@ import Ionicons from 'react-native-vector-icons/FontAwesome';
 import HomeScreen from './app/views/Calculator';
 import TableScreen from './app/views/Tablescreen';
 import ColorScreen from './app/views/Colors';
-
+import AboutScreen from './app/views/About';
 
 const TabNavigator = createBottomTabNavigator(
   {
   'Converter': HomeScreen,
   'Conversion Table': TableScreen,
-  'Colors': ColorScreen
+  'Colors': ColorScreen,
+  'About': AboutScreen
   },
   {
     defaultNavigationOptions: ({ navigation }) => ({
@@ -24,6 +25,7 @@ const TabNavigator = createBottomTabNavigator(
         if (routeName === 'Converter') iconName = `calculator`;
         if (routeName === 'Conversion Table') iconName = `table`;
         if (routeName === 'Colors') iconName = `tint`;
+        if (routeName === 'About') iconName = `question`;
        
         // You can return any component that you like here!
         return <IconComponent name={iconName} size={25} color={tintColor} />;
