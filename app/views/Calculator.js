@@ -130,82 +130,118 @@ export default class HomeScreen extends React.Component {
         return (
           <View style={styles.container}>
           
-          <View style={styles.header}>
-            <Text style={styles.headerText}>Converter</Text>
-          </View>
-
-
-
-          <View style={styles.inputFieldBlock}>
-            
-            <TextInput 
-              style={styles.inputField}
-              autoCapitalize={"characters"}
-              autoFocus={true}
-              keyboardType={"numeric"}
-              clearButtonMode={"always"}
-              placeholder={"Decimal"}
-              placeholderTextColor={'white'}
-              maxLength={5}
-              selectionColor={'black'}
-              onChangeText={(text) => this.convert_dec(text)} 
-              value={this.state.dec}
-            />
-
-            
-            <TextInput 
-              style={styles.inputField}
-              autoCapitalize={"characters"}
-              clearButtonMode={"always"}
-              placeholder={"Hexadecimal"}
-              placeholderTextColor={'white'}
-              selectionColor={'black'}
-              maxLength={4}
-              onChangeText={(text) => this.convert_hex(text)} 
-              value={this.state.hex}
-            />
           
+            <View style={styles.header}>
+              <Text style={styles.headerText}>Converter</Text>
+            </View>
+
           
-            <TextInput 
-              style={styles.inputField}
-              autoCapitalize={"characters"}
-              keyboardType={"numeric"}
-              clearButtonMode={"always"}
-              placeholder={"Binary"}
-              placeholderTextColor={'white'}
-              maxLength={16}
-              selectionColor={'black'}
-              onChangeText={(text) => this.convert_bin(text)}
-              value={this.state.bin}
-            />
+            <View style={styles.content}>
+
+                <View style={styles.inputRow}>
+                    <View style={styles.inputRowLeft}>
+                      <Text style={styles.textNormal}>#</Text>
+                    </View>
+                    <View style={styles.inputRowMiddle}>
+
+                      <TextInput 
+                        style={[styles.inputField,styles.textNormal]}
+                        autoCapitalize={"characters"}
+                        autoFocus={false}
+                        keyboardType={"numeric"}
+                        clearButtonMode={"always"}
+                        placeholder={"Decimal"}
+                        placeholderTextColor={'white'}
+                        maxLength={5}
+                        selectionColor={'black'}
+                        onChangeText={(text) => this.convert_dec(text)} 
+                        value={this.state.dec}
+                      />
+
+                    </View>
+                    <View style={styles.inputRowRight}></View>
+                </View>
 
 
-          <View style={styles.buttonContainer}>
 
-            <TouchableOpacity style={[styles.button, { opacity: this.state.pressable ? 1 : 0.5 }]} onPress= {() => this.convert_asl(this)} disabled={!this.state.pressable} >
-              <Text style={styles.buttonText}>ASL</Text>
-            </TouchableOpacity>
+                <View style={styles.inputRow}>
+                    <View style={styles.inputRowLeft}>
+                      <Text style={styles.textNormal}>$</Text>
+                    </View>
+                    <View style={styles.inputRowMiddle}>
 
-            <TouchableOpacity style={[styles.button, { opacity: this.state.pressable ? 1 : 0.5 }]} onPress= {() => this.convert_lsr(this)} disabled={!this.state.pressable} >
-              <Text style={styles.buttonText}>LSR</Text>
-            </TouchableOpacity>
+                        <TextInput 
+                          style={[styles.inputField,styles.textNormal]}
+                          autoCapitalize={"characters"}
+                          clearButtonMode={"always"}
+                          placeholder={"Hexadecimal"}
+                          placeholderTextColor={'white'}
+                          selectionColor={'black'}
+                          maxLength={4}
+                          onChangeText={(text) => this.convert_hex(text)} 
+                          value={this.state.hex}
+                        />
 
-            <TouchableOpacity style={[styles.button, { opacity: this.state.pressable ? 1 : 0.5 }]} onPress= {() => this.convert_rol(this)} disabled={!this.state.pressable} >
-              <Text style={styles.buttonText}>ROL</Text>
-            </TouchableOpacity>
+                    </View>
+                    <View style={styles.inputRowRight}></View>
+                </View>
 
-            <TouchableOpacity style={[styles.button, { opacity: this.state.pressable ? 1 : 0.5 }]} onPress= {() => this.convert_ror(this)} disabled={!this.state.pressable} >
-              <Text style={styles.buttonText}>ROR</Text>
-            </TouchableOpacity>
 
-            <TouchableOpacity style={[styles.button, { opacity: this.state.pressable ? 1 : 0.5 }]} onPress= {() => this.toggle_carry(this)} disabled={!this.state.pressable} >
-              <Text style={styles.buttonText}>Carry: {this.state.carry}</Text>
-            </TouchableOpacity>
 
-          </View>
+                <View style={styles.inputRow}>
+                    <View style={styles.inputRowLeft}>
+                      <Text style={styles.textNormal}>%</Text>
+                    </View>
+                    <View style={styles.inputRowMiddle}>
 
-          </View>
+                        <TextInput 
+                          style={[styles.inputField,styles.textNormal, styles.textSmaller]}
+                          autoCapitalize={"characters"}
+                          keyboardType={"numeric"}
+                          clearButtonMode={"always"}
+                          placeholder={"Binary"}
+                          placeholderTextColor={'white'}
+                          maxLength={16}
+                          selectionColor={'black'}
+                          onChangeText={(text) => this.convert_bin(text)}
+                          value={this.state.bin}
+                          
+                        />
+
+                    </View>
+                    <View style={styles.inputRowRight}>
+
+                      <TouchableOpacity style={[styles.carry, { opacity: this.state.pressable ? 1 : 0.5 }]} onPress= {() => this.toggle_carry(this)} disabled={!this.state.pressable} >
+                        <Text style={styles.buttonTextCarry}>{this.state.carry}</Text>
+                      </TouchableOpacity>
+
+                    </View>
+                </View>
+
+               
+
+                <View style={styles.buttonContainer}>
+                  <TouchableOpacity style={[styles.button, { opacity: this.state.pressable ? 1 : 0.3 }]} onPress= {() => this.convert_asl(this)} disabled={!this.state.pressable} >
+                    <Text style={styles.buttonText}>ASL</Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity style={[styles.button, { opacity: this.state.pressable ? 1 : 0.3 }]} onPress= {() => this.convert_lsr(this)} disabled={!this.state.pressable} >
+                    <Text style={styles.buttonText}>LSR</Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity style={[styles.button, { opacity: this.state.pressable ? 1 : 0.3 }]} onPress= {() => this.convert_rol(this)} disabled={!this.state.pressable} >
+                    <Text style={styles.buttonText}>ROL</Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity style={[styles.button, { opacity: this.state.pressable ? 1 : 0.3 }]} onPress= {() => this.convert_ror(this)} disabled={!this.state.pressable} >
+                    <Text style={styles.buttonText}>ROR</Text>
+                  </TouchableOpacity>
+                </View>
           
+              </View>
+
+              <View style={styles.spacer}></View>
+
         </View>
         );
     }
@@ -215,76 +251,120 @@ export default class HomeScreen extends React.Component {
 const styles = StyleSheet.create({
     container: {
      flex: 1,
-     backgroundColor: 'tomato'
+     backgroundColor: 'lightslategrey',
+    },
+
+    content: {
+      padding: 30,
+      flex: 4,
+      
+    },
+
+    inputRow: {
+      flexDirection: 'row',
+      borderBottomColor: 'white',
+      borderBottomWidth: 2, 
+      paddingTop: 10,
+      paddingBottom: 6
+    },
+
+    inputRowLeft: {
+      flex: 0.8,
+      margin: 0,
+      padding: 0, 
+     
+    },
+
+    inputRowMiddle: {
+      flex: 8,
+      margin: 0,
+      padding: 0,
+     
+    },
+
+    inputRowRight: {
+      flex: 1,
+      margin: 0,
+      padding: 0,
+     
     },
 
     buttonContainer: {
       marginTop: 20,
-      flex: 1,
       flexDirection: 'row',
       justifyContent: 'space-between'
     },
 
     button: {
       alignItems: 'center',
-      backgroundColor: 'white',
-      padding: 6,
-      height: 46
+      backgroundColor: 'tomato',
+      paddingTop: 6,
+      paddingBottom: 6,
+      paddingLeft: 10,
+      paddingRight: 10,
+      justifyContent: 'center',
+    },
+
+    buttonTextCarry: {
+      color: 'lightslategrey',
+      fontSize: 24,
+      fontFamily: "courier",
+      fontWeight: 'bold',
+      
     },
 
     buttonText: {
-      color: 'tomato',
+      color: 'white',
       fontSize: 24,
-
+      fontFamily: "courier",
+      fontWeight: 'bold',
+      lineHeight: 24,
     },
 
     carry:{
-      backgroundColor: 'yellow',
-      width: 20,
-      height: 20,
+      backgroundColor: 'white',
       alignItems: 'center',
+      justifyContent: 'center',
     },
 
 
     inputField: {
-      marginBottom: 10,
-      paddingTop: 6,
-      paddingBottom: 0,
-      fontSize: 30,
+      borderBottomColor: 'white',
+      margin: 0,
+      padding: 0,
+      
+    },
+
+    textNormal: {
+      fontSize: 26,
       fontFamily: "courier",
       fontWeight: 'bold',
       color: 'white', 
-      borderBottomColor: 'white',
-      borderBottomWidth: 2,   
-       
     },
 
-    inputLabel:{
-      color: 'white',
-      fontSize: 18,      
-    },
-
-    inputFieldBlock: {
-      paddingLeft: 40,
-      paddingTop: 10,
-      paddingRight: 40,     
+    textSmaller: {
+      fontSize: 26,
     },
     
-
     header: {
-      
       backgroundColor: 'rgba(50,50,50,1.0)',
       paddingLeft: 20,
       paddingRight: 20,
       paddingBottom: 10,
       paddingTop: 10,
-      marginBottom: 20
+      marginBottom: 20,
+      
     },
 
     headerText: {
       color: 'white',
       fontSize: 24,
 
+    },
+
+    spacer:{
+      flex: 1,
+      
     },
     
   })
