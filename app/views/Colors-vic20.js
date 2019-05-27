@@ -34,7 +34,7 @@ export default class ColorScreen extends React.Component {
         <View style={styles.container}>
           
           <View style={styles.header}>
-            <Text style={styles.headerText}>Commodore 64 colors</Text>
+            <Text style={styles.headerText}>Commodore VIC/VC 20 colors</Text>
           </View>
           
           <View style={styles.tableHeader}>

@@ -104,9 +104,9 @@ export default class HomeScreen extends React.Component {
       // but do string operations instead
       
       let result = dec2Bin(this.state.dec); // first give me the binary version of the decimal number entered
-      let temp_carry = result.slice(-1);   // the most significant bit goes into the temp carry
+      let temp_carry = result.slice(-1);   
       
-      result =  this.state.carry + result.slice(0,7);      // now we drop the first character ( most significant bit) and add the carry
+      result =  this.state.carry + result.slice(0,7);     
 
       result = parseInt(result,2);          // we convert the string into the binary number
       result = result.toString(10);         // and the number into decimal string (needed as input for the function below)
