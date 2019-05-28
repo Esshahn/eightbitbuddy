@@ -10,6 +10,8 @@ export default class HomeScreen extends React.Component {
     constructor(props) {
       super(props);
       this.state = { dec: '', hex: '', bin: '', carry: '0', pressable: false };
+      this.bgColor = 'red';
+      
       
     }
 
@@ -121,14 +123,35 @@ export default class HomeScreen extends React.Component {
         this.state.carry = "0";
       }
       this.setState({carry: this.state.carry});
+     
+    }
+
+    getTimeColor(){
+
+      this.today = new Date();
+      this.hour = this.today.getHours();
+      this.minutes = this.today.getMinutes();
+
+      if (this.hour < 7 || this.hour >= 22){ 
+        this.bgColor = 'black';
+      } else {
+        this.bgColor = 'darkslategrey';
+      }
+
+      if(this.hour == 13 && this.minutes == 37){
+        this.bgColor = 'hotpink';
+      }
     }
 
 
 
 
     render() {
+
+        this.getTimeColor();
+
         return (
-          <View style={styles.container}>
+          <View style={[styles.container,{backgroundColor:this.bgColor}]}>
           
           
             <View style={styles.header}>
@@ -211,7 +234,7 @@ export default class HomeScreen extends React.Component {
                     </View>
                     <View style={styles.inputRowRight}>
 
-                      <TouchableOpacity style={[styles.carry, { opacity: this.state.pressable ? 1 : 0.5 }]} onPress= {() => this.toggle_carry(this)} disabled={!this.state.pressable} >
+                      <TouchableOpacity style={[styles.carry, { opacity: this.state.pressable ? 1 : 0.3 }]} onPress= {() => this.toggle_carry(this)} disabled={!this.state.pressable} >
                         <Text style={styles.buttonTextCarry}>{this.state.carry}</Text>
                       </TouchableOpacity>
 
@@ -251,11 +274,11 @@ export default class HomeScreen extends React.Component {
 const styles = StyleSheet.create({
     container: {
      flex: 1,
-     backgroundColor: 'lightslategrey',
+    
     },
 
     content: {
-      padding: 30,
+      padding: 20,
       flex: 4,
       
     },
@@ -306,9 +329,9 @@ const styles = StyleSheet.create({
     },
 
     buttonTextCarry: {
-      color: 'lightslategrey',
+      color: 'white',
       fontSize: 24,
-      fontFamily: "courier",
+      fontFamily: "monospace",
       fontWeight: 'bold',
       
     },
@@ -322,7 +345,7 @@ const styles = StyleSheet.create({
     },
 
     carry:{
-      backgroundColor: 'white',
+      backgroundColor: 'tomato',
       alignItems: 'center',
       justifyContent: 'center',
     },

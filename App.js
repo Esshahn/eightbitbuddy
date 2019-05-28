@@ -10,10 +10,11 @@ import AboutScreen from './app/views/About';
 
 const TabNavigator = createBottomTabNavigator(
   {
-  'About': AboutScreen,
+  
   'Converter': HomeScreen,
   'Conversion Table': TableScreen,
   'Colors': ColorScreen,
+  'About': AboutScreen,
   
   },
   {
