@@ -1,6 +1,7 @@
 import React from 'react';
-import { Text, View, StyleSheet, FlatList } from 'react-native';
+import { Text, View, StyleSheet, Linking, Button } from 'react-native';
 import { dec2HexShort, dec2BinShort } from '../modules/Converter';
+import { ScrollView } from 'react-native-gesture-handler';
 
 
 export default class TableScreen extends React.Component {
@@ -21,6 +22,7 @@ export default class TableScreen extends React.Component {
 
           <View style={styles.content}>
 
+            <ScrollView>
               <View >
                 <Text>
                 8bitbuddy is a collection of useful little tools for developing in 6502 assembly. 
@@ -38,7 +40,13 @@ export default class TableScreen extends React.Component {
 
                 <Text style={styles.p}>This is my first App ever. Seriously. That's why it sucks. If you find it useful though, I'm happy.</Text>
                 
+                <Button title='Visit 8bitbuddy on Github' onPress={ ()=> Linking.openURL('http://www.awsm.de') } />
+                <Button title='Visit www.awsm.de' onPress={ ()=> Linking.openURL('http://www.awsm.de') } />
+
+             
+                
               </View>
+              </ScrollView>
 
           </View>
         

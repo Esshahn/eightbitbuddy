@@ -1,4 +1,4 @@
-package com.eightbitcalc;
+package com.eightbitbuddy;
 
 import android.app.Application;
 
