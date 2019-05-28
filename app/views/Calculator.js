@@ -58,17 +58,11 @@ export default class HomeScreen extends React.Component {
     }
 
     convert_lsr(){
+      let temp_carry = dec2Bin(this.state.dec).slice(-1);   
       let result = (this.state.dec >> 1).toString(10);
-      this.setState({dec: result, hex: dec2Hex(result), bin: dec2Bin(result)});
+      this.setState({dec: result, hex: dec2Hex(result), bin: dec2Bin(result), carry: temp_carry});
     }
 
-    convert_asl_old(){
-      let result = (this.state.dec << 1);
-      
-      if(result > 128) result = 0;
-      result = result.toString(10);
-      this.setState({dec: result, hex: dec2Hex(result), bin: dec2Bin(result)});
-    }
 
     convert_asl(){
       // this is a bit more complicated because shift left does 32 bit in JS, not 8 bit
@@ -76,11 +70,12 @@ export default class HomeScreen extends React.Component {
       // but do string operations instead
       
       let result = dec2Bin(this.state.dec); // first give me the binary version of the decimal number entered
+      let temp_carry = result.slice(0,1);
       result = result.slice(-7) + "0";      // now we drop the first character ( most significant bit) and add a 0 at the end
       result = parseInt(result,2);          // we convert the string into the binary number
       result = result.toString(10);         // and the number into decimal string (needed as input for the function below)
      
-      this.setState({dec: result, hex: dec2Hex(result), bin: dec2Bin(result)});
+      this.setState({dec: result, hex: dec2Hex(result), bin: dec2Bin(result), carry: temp_carry});
     }
 
 
