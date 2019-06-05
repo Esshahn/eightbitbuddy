@@ -36,7 +36,7 @@ export default class AboutScreen extends React.Component {
 
               <View >
                 <Text style={styles.h1}>
-                8bb is a little tool for developing in 6502 assembly. 
+                8bb is a little tool for 6502 assembly developers. 
                 </Text>
 
                 <Text style={styles.p}>Features: Instant conversion between decimal, hexadecimal and binary number systems, 
